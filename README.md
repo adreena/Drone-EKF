@@ -13,7 +13,7 @@ Ran the simulator to collect sensor measurment data for GPS X data and Accelerom
 Scenario 06 simulation captures approx 68% of the respective measurements (which is what we expect within +/- 1 sigma bound for a Gaussian noise model)
 
 <p align="center">
-<img src="animations/s6.gif" width="500"/>
+<img src="images/s6.gif" width="500"/>
 </p>
 
 
@@ -38,7 +38,7 @@ Scenario 06 simulation captures approx 68% of the respective measurements (which
 As shown below scenario `07_AttitudeEstimation`, attitude estimator sets within 0.1 rad for each of the Euler angles for at least 3 seconds.
 
 <p align="center">
-<img src="animations/s7.gif" width="500"/>
+<img src="images/s7.gif" width="500"/>
 </p>
 
 ### Step 3: Prediction Step ###
@@ -88,8 +88,8 @@ Here is the code to predict covariance follwoing [section 7.2](https://www.overl
 By tuning the `QPosXYStd` and the `QVelXYStd` process parameters in `QuadEstimatorEKF.txt` it can capture the magnitude of the error:
 
 <p align="center">
-<img src="animations/s8.gif" width="500"/>
-<img src="animations/s9.gif" width="500"/>
+<img src="images/s8.gif" width="500"/>
+<img src="images/s9.gif" width="500"/>
 </p>
 
 ### Step 4: Magnetometer Update ###
@@ -114,7 +114,7 @@ This implementations follows section [7.3.2](https://www.overleaf.com/read/vymfn
   }
 ```
 <p align="center">
-<img src="animations/s10.gif" width="500"/>
+<img src="images/s10.gif" width="500"/>
 </p>
 
 ### Step 5 & 6: GPS Update and Controller ###
@@ -139,5 +139,5 @@ Here is the GPS update implementations following section [7.3.2](https://www.ove
   }
 ```
 <p align="center">
-<img src="animations/s11.gif" width="500"/>
+<img src="images/s11.gif" width="500"/>
 </p>
