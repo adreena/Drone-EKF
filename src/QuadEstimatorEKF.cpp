@@ -168,13 +168,13 @@ VectorXf QuadEstimatorEKF::PredictState(VectorXf curState, float dt, V3F accel, 
   Quaternion<float> attitude = Quaternion<float>::FromEuler123_RPY(rollEst, pitchEst, curState(6));
 
   ////////////////////////////// BEGIN STUDENT CODE ///////////////////////////
-    predictedState(0) = curState[0] + curState[3]*dt;
-    predictedState(1) = curState[1] + curState[4]*dt;
-    predictedState(2) = curState[2] + curState[5]*dt;
+    predictedState(0) += curState(3)*dt;
+    predictedState(1) += curState(4)*dt;
+    predictedState(2) += curState(5)*dt;
     V3F rot_bg = attitude.Rotate_BtoI(accel);
-    predictedState(3) = (curState[3] + rot_bg.x) * dt;
-    predictedState(4) = (curState[4] + rot_bg.y) * dt;
-    predictedState(5) = (curState[5] - 9.81f + rot_bg.z) *dt;
+    predictedState(3) += rot_bg.x * dt;
+    predictedState(4) += rot_bg.y * dt;
+    predictedState(5) += (-9.81f + rot_bg.z) *dt;
     
 
   /////////////////////////////// END STUDENT CODE ////////////////////////////
@@ -211,8 +211,6 @@ MatrixXf QuadEstimatorEKF::GetRbgPrime(float roll, float pitch, float yaw)
     RbgPrime(1,0) = cos(theta)*cos(psi);
     RbgPrime(1,1) = sin(phi)*sin(theta)*cos(psi) - cos(phi)*sin(psi);
     RbgPrime(1,2) = cos(phi)*sin(theta)*cos(psi) + sin(phi)*sin(psi);
-
-
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   return RbgPrime;
@@ -259,12 +257,12 @@ void QuadEstimatorEKF::Predict(float dt, V3F accel, V3F gyro)
   gPrime(0,3) = dt;
   gPrime(1,4) = dt;
   gPrime(2,5) = dt;
-  gPrime(3,6) = (RbgPrime(0)*accel).sum()*dt;
-  gPrime(4,6) = (RbgPrime(1)*accel).sum()*dt;
-  gPrime(5,6) = (RbgPrime(2)*accel).sum()*dt;
+  gPrime(3,6) = (RbgPrime(0,0) * accel[0] + RbgPrime(0,1) * accel[1] + RbgPrime(0,2) * accel[2])*dt;
+  gPrime(4,6) = (RbgPrime(1,0) * accel[0] + RbgPrime(1,1) * accel[1] + RbgPrime(1,2) * accel[2])*dt;
+  gPrime(5,6) = (RbgPrime(2,0) * accel[0] + RbgPrime(2,1) * accel[1] + RbgPrime(2,2) * accel[2])*dt;
   
   // final multiplication
-   ekfCov = gPrime * ekfCov * gPrime.transpose()  + Q;
+   ekfCov = gPrime * (ekfCov * gPrime.transpose())  + Q;
   /////////////////////////////// END STUDENT CODE ////////////////////////////
 
   ekfState = newState;
