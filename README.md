@@ -15,7 +15,7 @@ IMAGE ******
 
 `UpdateFromIMU()` contains a complementary filter-type attitude filter Integrated with gyro to reduce the errors in the estimated attitude (Euler Angles). The goal is to reduce the attitude errors to get within 0.1 rad for each of the Euler angles.
 
-```python
+```c++
   Quaternion<float> qt_attitude = Quaternion<float>::FromEuler123_RPY(rollEst,pitchEst, ekfState(6));
 
   Quaternion<float> qt_gyro;
